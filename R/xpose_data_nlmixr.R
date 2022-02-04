@@ -24,7 +24,6 @@
 #'
 #' @return An \code{\link[xpose]{xpose_data}} object suitable for use in 'xpose'.
 #'
-#' @import nlmixr
 #' @importFrom dplyr group_by mutate tibble case_when
 #' @importFrom tibble as_tibble
 #' @importFrom stringr str_detect
@@ -66,7 +65,7 @@ xpose_data_nlmixr <- function(obj         = NULL,
 
   objok <- FALSE
 
-  if (any("nlmixrFitData" == class(obj))) {
+  if (inherits(obj, "nlmixrFitData")) {
       mtype <- obj$method
       software <- "nlmixr"
       if (is.null(wres)){
@@ -104,7 +103,7 @@ xpose_data_nlmixr <- function(obj         = NULL,
           }
       }
       objok <- TRUE
-  } else if (any("nlmixr_nlme" == class(obj))) {
+  } else if (inherits(obj, "nlmixr_nlme")) {
     mtype <- obj$method
     software <- "nlmixr"
     if (mtype == "nlme"){
@@ -112,6 +111,43 @@ xpose_data_nlmixr <- function(obj         = NULL,
         pred <- "PRED"
     }
     objok <- TRUE
+  } else if (inherits(obj,  "nlmixr2FitData")) {
+    mtype <- obj$method
+    software <- "nlmixr2"
+    if (is.null(wres)){
+      if (any(names(obj) == "CWRES")) {
+        wres <- "CWRES"
+      } else  if (any(names(obj) == "NPDE")){
+        wres <- "NPDE"
+      } else if (any(names(obj) == "RES")) {
+        wres <- "RES"
+        obj <- obj$addCwres
+        if (any(names(obj) == "CWRES")){
+          wres <- "CWRES"
+          warning(sprintf("Added CWRES to fit (using %s%s)",
+                          crayon::blue("nlmixr2::"), crayon::yellow("addCwres")))
+        } else {
+          warning(sprintf("Using RES; Consider adding NPDE (%s%s) to fit",
+                          crayon::blue("nlmixr2::"), crayon::yellow("addNpde")))
+        }
+      }
+    }
+    if (is.null(pred)){
+      if (any(names(obj) == "EPRED") & wres == "NPDE"){
+        pred <- "EPRED"
+      } else if (any(names(obj) == "CPRED") & wres == "CWRES"){
+        pred <- "CPRED"
+      } else if (any(names(obj) == "PRED") & wres == "RES"){
+        pred <- "PRED"
+      } else if (any(names(obj) == "EPRED")){
+        pred <- "EPRED"
+      } else if (any(names(obj) == "CPRED")){
+        pred <- "CPRED"
+      } else if (any(names(obj) == "PRED")){
+        pred <- "PRED"
+      }
+    }
+
   }
 
 
@@ -165,7 +201,7 @@ xpose_data_nlmixr <- function(obj         = NULL,
     stop(paste(pred, ' not found in nlmixr fit object.', sep=""), call. = FALSE)
   }
 
-  if (!is.null(obj$data.name) & any("nlmixrFitData" == class(obj))) {
+  if (!is.null(obj$data.name) & inherits(obj, "nlmixrFitData")) {
       ## getData works for nlme/saem;  It also works if you remove the data or use nlmixr's read data set
       full.dat <- suppressWarnings({nlmixr::nlmixrData(nlme::getData(obj))})
       names(full.dat) <- toupper(names(full.dat))
@@ -177,6 +213,10 @@ xpose_data_nlmixr <- function(obj         = NULL,
           full.dat <- full.dat[, !(names(full.dat) %in% names(data_a))]
       }
       data_a <- data.frame(data_a, full.dat);
+  } else if (inherits(obj, "nlmixr2FitData")) {
+    data_a <- obj$dataMergeInner
+    names(full.dat) <- toupper(names(data_a))
+    full.dat <- data_a
   }
 
   # check for ETAs
