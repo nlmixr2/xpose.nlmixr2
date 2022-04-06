@@ -1,8 +1,8 @@
-#' Import nlmixr output into R
+#' Import nlmixr2 output into R
 #'
-#' @description Convert 'nlmixr' model output into an 'xpose' database.
+#' @description Convert 'nlmixr2' model output into an 'xpose' database.
 #'
-#' @param obj nlmixr fit object to be evaluated.
+#' @param obj nlmixr2 fit object to be evaluated.
 #' @param pred Name of the population prediction variable to use for
 #'     plotting. If unspecified, it will choose either "NPDE",
 #'     "CWRES", and "RES" (in that order) if the column exists in the
@@ -31,11 +31,37 @@
 #' @importFrom stats coef rnorm
 #'
 #' @examples
-#' xpdb <- xpose_data_nlmixr(obj = theo_sd_fit)
+#'
+#' library(nlmixr2)
+#'
+#' one.cmt <- function() {
+#'   ini({
+#'     ## You may label each parameter with a comment
+#'     tka <- 0.45 # Ka
+#'     tcl <- log(c(0, 2.7, 100)) # Log Cl
+#'    ## This works with interactive models
+#'     ## You may also label the preceding line with label("label text")
+#'     tv <- 3.45; label("log V")
+#'     ## the label("Label name") works with all models
+#'     eta.ka ~ 0.6
+#'     eta.cl ~ 0.3
+#'     eta.v ~ 0.1
+#'     add.sd <- 0.7
+#'   })
+#'   model({
+#'     ka <- exp(tka + eta.ka)
+#'     cl <- exp(tcl + eta.cl)
+#'     v <- exp(tv + eta.v)
+#'     linCmt() ~ add(add.sd)
+#'   })
+#' }
+#'
+#' theo_sd_fit <- nlmixr(one.cmt, theo_sd, "focei", control=foceiControl(print=0))
+#'
+#' xpdb <- xpose_data_nlmixr2(obj = theo_sd_fit)
 #'
 #' @export
-
-xpose_data_nlmixr <- function(obj         = NULL,
+xpose_data_nlmixr2 <- function(obj         = NULL,
                               pred        = NULL, #"CPRED",
                               wres        = NULL, #"CWRES",
                               gg_theme    = theme_readable(),
@@ -63,129 +89,48 @@ xpose_data_nlmixr <- function(obj         = NULL,
 
   if (missing(quiet)) quiet <- !interactive()
 
-  objok <- FALSE
-
-  if (inherits(obj, "nlmixrFitData")) {
-      mtype <- obj$method
-      software <- "nlmixr"
-      if (is.null(wres)){
-          if (any(names(obj) == "CWRES")) {
-              wres <- "CWRES"
-          } else  if (any(names(obj) == "NPDE")){
-              wres <- "NPDE"
-          } else if (any(names(obj) == "RES")) {
-              wres <- "RES"
-              obj <- nlmixr::addCwres(obj)
-              if (any(names(obj) == "CWRES")){
-                  wres <- "CWRES"
-                  warning(sprintf("Added CWRES to fit (using %s%s)",
-                                  crayon::blue("nlmixr::"), crayon::yellow("addCwres")))
-              } else {
-                  warning(sprintf("Using RES; Consider adding NPDE (%s%s) to fit",
-                                  crayon::blue("nlmixr::"), crayon::yellow("addNpde")))
-              }
-
-          }
-      }
-      if (is.null(pred)){
-          if (any(names(obj) == "EPRED") & wres == "NPDE"){
-              pred <- "EPRED"
-          } else if (any(names(obj) == "CPRED") & wres == "CWRES"){
-              pred <- "CPRED"
-          } else if (any(names(obj) == "PRED") & wres == "RES"){
-              pred <- "PRED"
-          } else if (any(names(obj) == "EPRED")){
-              pred <- "EPRED"
-          } else if (any(names(obj) == "CPRED")){
-              pred <- "CPRED"
-          } else if (any(names(obj) == "PRED")){
-              pred <- "PRED"
-          }
-      }
-      objok <- TRUE
-  } else if (inherits(obj, "nlmixr_nlme")) {
-    mtype <- obj$method
-    software <- "nlmixr"
-    if (mtype == "nlme"){
-        wres <- "WRES"
-        pred <- "PRED"
-    }
-    objok <- TRUE
-  } else if (inherits(obj,  "nlmixr2FitData")) {
-    mtype <- obj$method
-    software <- "nlmixr2"
-    if (is.null(wres)){
-      if (any(names(obj) == "CWRES")) {
-        wres <- "CWRES"
-      } else  if (any(names(obj) == "NPDE")){
-        wres <- "NPDE"
-      } else if (any(names(obj) == "RES")) {
-        wres <- "RES"
-        obj <- obj$addCwres
-        if (any(names(obj) == "CWRES")){
-          wres <- "CWRES"
-          warning(sprintf("Added CWRES to fit (using %s%s)",
-                          crayon::blue("nlmixr2::"), crayon::yellow("addCwres")))
-        } else {
-          warning(sprintf("Using RES; Consider adding NPDE (%s%s) to fit",
-                          crayon::blue("nlmixr2::"), crayon::yellow("addNpde")))
-        }
-      }
-    }
-    if (is.null(pred)){
-      if (any(names(obj) == "EPRED") & wres == "NPDE"){
-        pred <- "EPRED"
-      } else if (any(names(obj) == "CPRED") & wres == "CWRES"){
-        pred <- "CPRED"
-      } else if (any(names(obj) == "PRED") & wres == "RES"){
-        pred <- "PRED"
-      } else if (any(names(obj) == "EPRED")){
-        pred <- "EPRED"
-      } else if (any(names(obj) == "CPRED")){
-        pred <- "CPRED"
-      } else if (any(names(obj) == "PRED")){
-        pred <- "PRED"
-      }
-    }
-
+  if (!inherits(obj,  "nlmixr2FitData")) {
+    stop("needs to be a nlmixr2 fit")
   }
-
-
-
-                                        #if ((objok == FALSE) | ("nlmixr_nlme" %in% class(obj))) {
-  if ((objok == FALSE)) {
-    stop('Model type currently not supported by xpose.', call. = FALSE)
+  mtype <- obj$est
+  software <- "nlmixr2"
+  if (is.null(wres)){
+    if (any(names(obj) == "CWRES")) {
+      wres <- "CWRES"
+    } else  if (any(names(obj) == "NPDE")){
+      wres <- "NPDE"
+    } else if (any(names(obj) == "RES")) {
+      wres <- "RES"
+      obj <- nlmixr2::addCwres(obj)
+      if (any(names(obj) == "CWRES")){
+        wres <- "CWRES"
+        warning(sprintf("Added CWRES to fit (using %s%s)",
+                        crayon::blue("nlmixr2::"), crayon::yellow("addCwres")))
+      } else {
+        warning(sprintf("Using RES; Consider adding NPDE (%s%s) to fit",
+                        crayon::blue("nlmixr2::"), crayon::yellow("addNpde")))
+      }
+    }
+  }
+  if (is.null(pred)){
+    if (any(names(obj) == "EPRED") & wres == "NPDE"){
+      pred <- "EPRED"
+    } else if (any(names(obj) == "CPRED") & wres == "CWRES"){
+      pred <- "CPRED"
+    } else if (any(names(obj) == "PRED") & wres == "RES"){
+      pred <- "PRED"
+    } else if (any(names(obj) == "EPRED")){
+      pred <- "EPRED"
+    } else if (any(names(obj) == "CPRED")){
+      pred <- "CPRED"
+    } else if (any(names(obj) == "PRED")){
+      pred <- "PRED"
+    }
   }
 
   runname <- deparse(substitute(obj))
 
-  if ("nlmixr_nlme" %in% class(obj)) {
-    data <- obj$call[[3]]
-
-    data$PRED  <- obj$fitted[,1]
-    data$IPRED <- obj$fitted[,2]
-    data$RES   <- obj$residuals[,1]
-    data$IRES  <- obj$residuals[,2]
-
-    pars <- as.data.frame(stats::coef(obj))
-    pars$ID <- row.names(as.data.frame(stats::coef(obj)))
-
-    etas <- as.data.frame(obj$coefficients$random$ID)
-    names(etas) <- paste("eta.", names(etas), sep="")
-    etas$ID <- row.names(as.data.frame(obj$coefficients$random$ID))
-
-    data$ID <- as.character(data$ID)
-    data <- suppressMessages(dplyr::inner_join(data, pars))
-    data <- suppressMessages(dplyr::inner_join(data, etas))
-
-    data_a <- data %>%
-      dplyr::group_by(ID) %>%
-      dplyr::mutate(WRES = get_wres(res = RES, dv = DV, pred=PRED))
-
-    data_a <- tibble::as_tibble(data_a)
-  }
-
-  if (any("nlmixrFitData" == class(obj))) {
+  if (any("nlmixr2FitData" == class(obj))) {
     data <- as.data.frame(obj)
     data_a <- data %>%
       dplyr::group_by(ID)
@@ -194,30 +139,19 @@ xpose_data_nlmixr <- function(obj         = NULL,
   }
 
   if(!(wres %in% names(data_a))) {
-    stop(paste(wres, ' not found in nlmixr fit object.', sep=""), call. = FALSE)
+    stop(paste(wres, ' not found in nlmixr2 fit object.', sep=""), call. = FALSE)
   }
 
   if(!(pred %in% names(data_a))) {
-    stop(paste(pred, ' not found in nlmixr fit object.', sep=""), call. = FALSE)
+    stop(paste(pred, ' not found in nlmixr2 fit object.', sep=""), call. = FALSE)
   }
 
-  if (!is.null(obj$data.name) & inherits(obj, "nlmixrFitData")) {
-      ## getData works for nlme/saem;  It also works if you remove the data or use nlmixr's read data set
-      full.dat <- suppressWarnings({nlmixr::nlmixrData(nlme::getData(obj))})
-      names(full.dat) <- toupper(names(full.dat))
-      if (any(names(full.dat) == "EVID")){
-          full.dat <- full.dat[full.dat$EVID == 0 | full.dat$EVID == 2, !(names(full.dat) %in% names(data_a))];
-      } else if (any(names(full.dat) == "MDV")){
-          full.dat <- full.dat[full.dat$MDV == 0, !(names(full.dat) %in% names(data_a))];
-      } else {
-          full.dat <- full.dat[, !(names(full.dat) %in% names(data_a))]
-      }
-      data_a <- data.frame(data_a, full.dat);
-  } else if (inherits(obj, "nlmixr2FitData")) {
-    data_a <- obj$dataMergeInner
-    names(full.dat) <- toupper(names(data_a))
-    full.dat <- data_a
+  if (!inherits(obj, "nlmixr2FitData")) {
+    stop("needs to be a nlmixr2 fit object")
   }
+  data_a <- obj$dataMergeInner
+  names(data_a) <- toupper(names(data_a))
+  full.dat <- data_a
 
   # check for ETAs
   # if(!any(stringr::str_detect(names(data_a), 'ETA\\d+|ET\\d+|eta.*'))) {
@@ -230,7 +164,7 @@ xpose_data_nlmixr <- function(obj         = NULL,
   data <- NULL
   data_ind <- data_a %>%
     colnames() %>%
-    dplyr::tibble(table = 'nlmixr',
+    dplyr::tibble(table = 'nlmixr2',
                   col   = .,
                   type  = NA_character_,
                   label = NA_character_,     # Feature to be added in future release
@@ -267,8 +201,8 @@ xpose_data_nlmixr <- function(obj         = NULL,
   if ('summary' %in% skip) {
     msg('Skipping summary generation', quiet)
     summary <- NULL
-  } else if (software == 'nlmixr') {
-    summary <- summarise_nlmixr_model(obj, '', software, rounding = xp_theme$rounding, runname=runname)
+  } else if (software == 'nlmixr2') {
+    summary <- summarise_nlmixr2_model(obj, '', software, rounding = xp_theme$rounding, runname=runname)
   }
 
   # The weighted residuals are calculated by dividing the vector of each
@@ -285,7 +219,7 @@ xpose_data_nlmixr <- function(obj         = NULL,
   # -Andy
 
   files <- NULL
-  if(mtype=="SAEM") {
+  if(mtype=="saem") {
     tracedat <- tibble::as_tibble(as.data.frame(obj$par.hist))
     names(tracedat)[grep("iter", names(tracedat))] <-
       "ITERATION"
@@ -307,8 +241,10 @@ xpose_data_nlmixr <- function(obj         = NULL,
   list(code = obj$uif, summary = summary, data = data,
        files = files, gg_theme = gg_theme, xp_theme = xp_theme,
        options = list(dir = NULL, quiet = quiet,
-                      manual_import = NULL), software = 'nlmixr') %>%
+                      manual_import = NULL), software = 'nlmixr2') %>%
     structure(class = c('xpose_data', 'uneval'))
 }
 
-
+#' @rdname xpose_data_nlmixr2
+#' @export
+xpose_data_nlmixr <- xpose_data_nlmixr2

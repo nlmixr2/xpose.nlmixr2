@@ -14,6 +14,6 @@ nlmixr2_vpc_theme
 A list with 'vpc' theme specifiers.
 }
 \description{
-Default VPC theme for 'xpose.nlmixr2'.
+Default VPC theme for 'xpose.nlmixre'.
 }
 \keyword{datasets}

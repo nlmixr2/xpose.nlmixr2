@@ -1,14 +1,14 @@
 #' Data summary function
 #'
-#' @description Convert 'nlmixr' model output into an 'xpose' database
+#' @description Convert 'nlmixr2' model output into an 'xpose' database
 #'
-#' @param obj nlmixr fit object to be evaluated
+#' @param obj nlmixr2 fit object to be evaluated
 #' @param model Model. Can be blank
 #' @param software Software that generated the model fit
 #' @param rounding Number of figures to round estimates to
 #' @param runname Name of the model object being converted
 #'
-#' @return A summary data object used by \link{xpose_data_nlmixr}.
+#' @return A summary data object used by \link{xpose_data_nlmixr2}.
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr bind_rows filter mutate arrange_at case_when select one_of tibble
@@ -16,35 +16,35 @@
 #' @importFrom rlang syms
 
 
-summarise_nlmixr_model <- function(obj, model, software, rounding, runname) {
+summarise_nlmixr2_model <- function(obj, model, software, rounding, runname) {
     sum <- dplyr::bind_rows(
-                      sum_nlmixr_software(software),                    # Software name
-    sum_nlmixr_version(software),                     # Software version
-    sum_nlmixr_file(runname, software),               # Model file
-    sum_nlmixr_run(obj, runname, software),           # Model run
-    sum_nlmixr_directory(obj, software),              # Model directory
-    sum_nlmixr_reference(model, software),            # Reference model
-    sum_nlmixr_timestart(obj, model, software),            # Run start time
-    sum_nlmixr_timestop(obj, model, software),             # Run stop time
-    sum_nlmixr_probn(model, software),                # Problem no.
-    sum_nlmixr_label(model, software),                # Model label
-    sum_nlmixr_description(model, software),          # Model description
-    sum_nlmixr_input_data(obj, model, software),           # Model input data used
-    sum_nlmixr_nobs(model, software, obj),               # Simulation seed
-    sum_nlmixr_subroutine(model, software),           # Des solver
-    sum_nlmixr_runtime(model, software, obj, rounding),   # Estimation runtime
-    sum_nlmixr_covtime(model, software, obj, rounding),   # Covariance matrix runtime
-    sum_nlmixr_term(model, software),                 # Run termination message
-    sum_nlmixr_warnings(model, software),             # Run warnings (e.g. boundary)
-    sum_nlmixr_errors(model, software),               # Run errors (e.g termination error)
-    sum_nlmixr_nsig(model, software),                 # Number of significant digits
-    sum_nlmixr_condn(model, software, rounding),      # Condition number
-    sum_nlmixr_nesample(model, software),             # Number of esample
-    sum_nlmixr_esampleseed(model, software),          # esample seed number
-    sum_nlmixr_ofv(model, software, obj, rounding),   # Objective function value
-    sum_nlmixr_method(model, software, obj),          # Estimation method or sim
-    sum_nlmixr_shk(model, software, 'eps', obj, rounding), # Epsilon shrinkage
-    sum_nlmixr_shk(model, software, 'eta', obj, rounding)  # Eta shrinkage
+                      sum_nlmixr2_software(software),                    # Software name
+    sum_nlmixr2_version(software),                     # Software version
+    sum_nlmixr2_file(runname, software),               # Model file
+    sum_nlmixr2_run(obj, runname, software),           # Model run
+    sum_nlmixr2_directory(obj, software),              # Model directory
+    sum_nlmixr2_reference(model, software),            # Reference model
+    sum_nlmixr2_timestart(obj, model, software),            # Run start time
+    sum_nlmixr2_timestop(obj, model, software),             # Run stop time
+    sum_nlmixr2_probn(model, software),                # Problem no.
+    sum_nlmixr2_label(model, software),                # Model label
+    sum_nlmixr2_description(model, software),          # Model description
+    sum_nlmixr2_input_data(obj, model, software),           # Model input data used
+    sum_nlmixr2_nobs(model, software, obj),               # Simulation seed
+    sum_nlmixr2_subroutine(model, software),           # Des solver
+    sum_nlmixr2_runtime(model, software, obj, rounding),   # Estimation runtime
+    sum_nlmixr2_covtime(model, software, obj, rounding),   # Covariance matrix runtime
+    sum_nlmixr2_term(model, software),                 # Run termination message
+    sum_nlmixr2_warnings(model, software),             # Run warnings (e.g. boundary)
+    sum_nlmixr2_errors(model, software),               # Run errors (e.g termination error)
+    sum_nlmixr2_nsig(model, software),                 # Number of significant digits
+    sum_nlmixr2_condn(model, software, rounding),      # Condition number
+    sum_nlmixr2_nesample(model, software),             # Number of esample
+    sum_nlmixr2_esampleseed(model, software),          # esample seed number
+    sum_nlmixr2_ofv(model, software, obj, rounding),   # Objective function value
+    sum_nlmixr2_method(model, software, obj),          # Estimation method or sim
+    sum_nlmixr2_shk(model, software, 'eps', obj, rounding), # Epsilon shrinkage
+    sum_nlmixr2_shk(model, software, 'eta', obj, rounding)  # Eta shrinkage
   )
 
 
@@ -106,25 +106,25 @@ sum_tpl <- function(label, value) {
 }
 
 # Software name
-sum_nlmixr_software <- function(software) {
+sum_nlmixr2_software <- function(software) {
   sum_tpl('software', software)
 }
 
 # Software version
-sum_nlmixr_version <- function(software) {
-    sum_tpl('version', as.character(utils::packageVersion('nlmixr')))
+sum_nlmixr2_version <- function(software) {
+    sum_tpl('version', as.character(utils::packageVersion('nlmixr2')))
 }
 
 # Model object name
-sum_nlmixr_file <- function(runname, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_file <- function(runname, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'file', value = runname)
   }
 }
 
 # Model run name
-sum_nlmixr_run <- function(obj, runname, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_run <- function(obj, runname, software) {
+  if (software == 'nlmixr2') {
     if(!is.null(obj$model.name)) {
       dplyr::tibble(problem = 1, subprob = 0, label = 'run', value = obj$model.name)
     } else {
@@ -134,57 +134,57 @@ sum_nlmixr_run <- function(obj, runname, software) {
 }
 
 # Model file directory
-sum_nlmixr_directory <- function(obj, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_directory <- function(obj, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'dir', value = getwd())
   }
 }
 
 # Reference model
-sum_nlmixr_reference <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_reference <- function(model, software) {
+  if (software == 'nlmixr2') {
     sum_tpl('ref', 'not implemented')
   }
 }
 
 # Run start time
-sum_nlmixr_timestart <- function(obj, model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_timestart <- function(obj, model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 0, subprob = 0, label = 'timestart', value = as.character(obj$start.time))
   }
 }
 
 # Run stop time
-sum_nlmixr_timestop <- function(obj, model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_timestop <- function(obj, model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 0, subprob = 0, label = 'timestop', value = as.character(obj$stop.time))
   }
 }
 
 # Problem no.
-sum_nlmixr_probn <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_probn <- function(model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'probn', value = '1')
   }
 }
 
 # Model Label
-sum_nlmixr_label <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_label <- function(model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'label', value = 'na')
   }
 }
 
 # Model description
-sum_nlmixr_description <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_description <- function(model, software) {
+  if (software == 'nlmixr2') {
     sum_tpl('descr', 'not implemented')
   }
 }
 
 # Input data
-sum_nlmixr_input_data <- function(obj, model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_input_data <- function(obj, model, software) {
+  if (software == 'nlmixr2') {
     if(!is.null(obj$data.name)) {
         dplyr::tibble(problem = 1, subprob = 0, label = 'data', value = obj$data.name)
     } else {
@@ -194,51 +194,46 @@ sum_nlmixr_input_data <- function(obj, model, software) {
 }
 
 # Number of observations
-sum_nlmixr_nobs <- function(model, software, obj) {
-  if (software == 'nlmixr') {
-      dplyr::tibble(problem = 1, subprob = 0, label = 'nobs', value = as.character(stats::nobs(obj)))
+sum_nlmixr2_nobs <- function(model, software, obj) {
+  if (software == 'nlmixr2') {
+      dplyr::tibble(problem = 1, subprob = 0, label = 'nobs', value = as.character(obj$nobs))
   }
 }
 
 # Number of individuals
-sum_nlmixr_nind <- function(model, software, obj) {
-  if (software == 'nlmixr') {
-    if ("nlmixr_nlme" %in% class(obj)) {
-      nind <- dim(obj$fitted)[1]
-    }
-    if (any("nlmixrFitData" == class(obj))) {
-      nind <- length(unique(obj$ID))
-    }
+sum_nlmixr2_nind <- function(model, software, obj) {
+  if (software == 'nlmixr2') {
+    nid <- obj$nsub
     dplyr::tibble(problem = 1, subprob = 0, label = 'nind', value = as.character(nind))
   }
 }
 
 # Simulation number
-sum_nlmixr_nsim <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_nsim <- function(model, software) {
+  if (software == 'nlmixr2') {
     sum_tpl('nsim', 'not implemented')
   }
 }
 
 # Simulation seed
-sum_nlmixr_simseed <- function(obj, model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_simseed <- function(obj, model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'seed', value = as.character(obj$seed))
   }
 }
 
 # DES solver
-sum_nlmixr_subroutine <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_subroutine <- function(model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'subroutine', value = 'na')
   }
 }
 
 # Estimation runtime
-sum_nlmixr_runtime <- function(model, software, obj, rounding) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_runtime <- function(model, software, obj, rounding) {
+  if (software == 'nlmixr2') {
     rt <- 'na'
-    if (any("nlmixrFitData" == class(obj))) {
+    if (is(obj, "nlmixr2FitData")) {
         rt <- sum(as.matrix(obj$time[, names(obj$time) != "covariance"]))
     }
     if (rt!='na') {
@@ -250,9 +245,8 @@ sum_nlmixr_runtime <- function(model, software, obj, rounding) {
 }
 
 # Covariance matrix runtime
-sum_nlmixr_covtime <- function(model, software, obj, rounding) {
-  if (software == 'nlmixr') {
-
+sum_nlmixr2_covtime <- function(model, software, obj, rounding) {
+  if (software == 'nlmixr2') {
     rt <- obj$time$covariance
     if (!is.null(rt)) {
       dplyr::tibble(problem = 1, subprob = 0, label = 'covtime', value = as.character(round(rt, rounding)))
@@ -263,58 +257,59 @@ sum_nlmixr_covtime <- function(model, software, obj, rounding) {
 }
 
 # Run termination
-sum_nlmixr_term <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_term <- function(model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'term', value = 'na')
   }
 }
 
 
 # Run warnings (e.g. boundary)
-sum_nlmixr_warnings <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_warnings <- function(model, software) {
+  if (software == 'nlmixr2') {
+    # Can get warnings in $warnings
     dplyr::tibble(problem = 1, subprob = 0, label = 'warnings', value = 'na')
   }
 }
 
 # Run errors (e.g termination error)
-sum_nlmixr_errors <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_errors <- function(model, software) {
+  if (software == 'nlmixr2') {
     sum_tpl('errors', 'na')
   }
 }
 
 # Number of significant digits
-sum_nlmixr_nsig <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_nsig <- function(model, software) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'nsig', value = 'na')
   }
 }
 
 # Condition number
-sum_nlmixr_condn <- function(model, software, rounding) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_condn <- function(model, software, rounding) {
+  if (software == 'nlmixr2') {
     dplyr::tibble(problem = 1, subprob = 0, label = 'condn', value = 'not implemented')
   }
 }
 
 # Number of ESAMPLE (i.e. NPDE)
-sum_nlmixr_nesample <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_nesample <- function(model, software) {
+  if (software == 'nlmixr2') {
     sum_tpl('nesample', 'na')
   }
 }
 
 # ESAMPLE seed number
-sum_nlmixr_esampleseed <- function(model, software) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_esampleseed <- function(model, software) {
+  if (software == 'nlmixr2') {
     sum_tpl('esampleseed', 'na')
   }
 }
 
 # Objective function value
-sum_nlmixr_ofv <- function(model, software, obj, rounding) {
-  if (software == 'nlmixr') {
+sum_nlmixr2_ofv <- function(model, software, obj, rounding) {
+  if (software == 'nlmixr2') {
     ofv <- obj$objective
     if(!is.null(ofv)) {
       dplyr::tibble(problem = 1, subprob = 0, label = 'ofv', value = as.character(round(ofv, digits=rounding)))
@@ -325,51 +320,46 @@ sum_nlmixr_ofv <- function(model, software, obj, rounding) {
 }
 
 # Estimation method or sim
-sum_nlmixr_method <- function(model, software, obj) {
-  if (software == 'nlmixr') {
-      dplyr::tibble(problem = 1, subprob = 0, label = 'method', value = obj$method)
+sum_nlmixr2_method <- function(model, software, obj) {
+  if (software == 'nlmixr2') {
+      dplyr::tibble(problem = 1, subprob = 0, label = 'method', value = obj$est)
   }
 }
 
 # Epsilon/Eta shrinkage
-sum_nlmixr_shk <- function(model, software, type, obj, rounding) {
-  if (software == 'nlmixr') {
-    if ("nlmixr_nlme" %in% class(obj)) {
-      lab <- paste(type, 'shk', sep='')
-      dplyr::tibble(problem = 1, subprob = 0, label = lab, value = 'not implemented')
-    } else {
-      shk <- 'na'
-      lab <- paste(type, 'shk', sep='')
-      if (any("nlmixrFitData" == class(obj))) {
-        if(type=="eps") {
-          shk <- paste(round((1 - stats::sd(obj$IWRES))*100, digits = rounding), "[1]", sep=" ")
-        }
-        if(type=="eta") {
-          omega <- diag(obj$omega)
-          d <- as.data.frame(obj[!duplicated(obj$ID),])
-
-          ## add ETA if missing
-          if(!all(names(omega) %in% names(d))) {
-            d <- merge(d, obj$eta)
-          }
-
-          ## account for 1-eta systems
-          if(length(names(omega)) == 1) {
-            d <- data.frame(eta = d[,names(d) %in% names(omega)])
-            names(d) <- names(omega)
-          } else {
-            d <- d[,names(d) %in% names(omega)]
-          }
-
-          eshr <- c()
-          for (i in 1:length(omega)) {
-            shr <- (1 - (stats::sd(d[,i]) / sqrt(omega[i])))*100
-            eshr <- c(eshr, round(shr, 3))
-          }
-          shk <- paste(paste(round(eshr, digits = rounding), ' [', 1:length(eshr), ']', sep=''), collapse=', ')
-        }
+sum_nlmixr2_shk <- function(model, software, type, obj, rounding) {
+  if (software == 'nlmixr2') {
+    shk <- 'na'
+    lab <- paste(type, 'shk', sep='')
+    if (any("nlmixr2FitData" == class(obj))) {
+      if(type=="eps") {
+        shk <- paste(round((1 - stats::sd(obj$IWRES))*100, digits = rounding), "[1]", sep=" ")
       }
-      dplyr::tibble(problem = 1, subprob = 0, label = lab, value = shk)
+      if(type=="eta") {
+        omega <- diag(obj$omega)
+        d <- as.data.frame(obj[!duplicated(obj$ID),])
+
+        ## add ETA if missing
+        if(!all(names(omega) %in% names(d))) {
+          d <- merge(d, obj$eta)
+        }
+
+        ## account for 1-eta systems
+        if(length(names(omega)) == 1) {
+          d <- data.frame(eta = d[,names(d) %in% names(omega)])
+          names(d) <- names(omega)
+        } else {
+          d <- d[,names(d) %in% names(omega)]
+        }
+
+        eshr <- c()
+        for (i in 1:length(omega)) {
+          shr <- (1 - (stats::sd(d[,i]) / sqrt(omega[i])))*100
+          eshr <- c(eshr, round(shr, 3))
+        }
+        shk <- paste(paste(round(eshr, digits = rounding), ' [', 1:length(eshr), ']', sep=''), collapse=', ')
+      }
     }
+    dplyr::tibble(problem = 1, subprob = 0, label = lab, value = shk)
   }
 }

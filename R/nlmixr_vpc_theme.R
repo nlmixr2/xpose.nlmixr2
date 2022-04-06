@@ -1,6 +1,6 @@
 #' Default VPC theme for 'xpose.nlmixr'
 #'
-#' @description Default VPC theme for 'xpose.nlmixr'.
+#' @description Default VPC theme for 'xpose.nlmixre'.
 #'
 #' @return A list with 'vpc' theme specifiers.
 #'
@@ -9,7 +9,7 @@
 #'
 #' @export
 
-nlmixr_vpc_theme <- vpc::new_vpc_theme(list(obs_color = "#1F4E79",
+nlmixr2_vpc_theme <- vpc::new_vpc_theme(list(obs_color = "#1F4E79",
                                             obs_size = 1,
                                             obs_median_color = "#1F4E79",
                                             obs_median_linetype = "solid",

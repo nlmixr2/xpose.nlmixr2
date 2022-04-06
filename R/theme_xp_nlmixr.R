@@ -1,6 +1,6 @@
-#' Default 'nlmixr' theme for 'xpose'
+#' Default 'nlmixr2' theme for 'xpose'
 #'
-#' @description Default 'nlmixr' theme for 'xpose'.
+#' @description Default 'nlmixr2' theme for 'xpose'.
 #'
 #' @return A list with 'xpose' theme specifiers.
 #'
@@ -9,7 +9,7 @@
 #'
 #' @export
 
-theme_xp_nlmixr <- function ()
+theme_xp_nlmixr2 <- function ()
 {
   structure(list(rounding = 1,
                  title_suffix = "",

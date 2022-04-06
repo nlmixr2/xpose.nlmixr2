@@ -2,9 +2,21 @@
 % Please edit documentation in R/xpose_data_nlmixr.R
 \name{xpose_data_nlmixr2}
 \alias{xpose_data_nlmixr2}
+\alias{xpose_data_nlmixr}
 \title{Import nlmixr2 output into R}
 \usage{
 xpose_data_nlmixr2(
+  obj = NULL,
+  pred = NULL,
+  wres = NULL,
+  gg_theme = theme_readable(),
+  xp_theme = theme_xp_default(),
+  quiet,
+  skip = NULL,
+  ...
+)
+
+xpose_data_nlmixr(
   obj = NULL,
   pred = NULL,
   wres = NULL,
@@ -50,6 +62,33 @@ An \code{\link[xpose]{xpose_data}} object suitable for use in 'xpose'.
 Convert 'nlmixr2' model output into an 'xpose' database.
 }
 \examples{
+
+library(nlmixr2)
+
+one.cmt <- function() {
+  ini({
+    ## You may label each parameter with a comment
+    tka <- 0.45 # Ka
+    tcl <- log(c(0, 2.7, 100)) # Log Cl
+   ## This works with interactive models
+    ## You may also label the preceding line with label("label text")
+    tv <- 3.45; label("log V")
+    ## the label("Label name") works with all models
+    eta.ka ~ 0.6
+    eta.cl ~ 0.3
+    eta.v ~ 0.1
+    add.sd <- 0.7
+  })
+  model({
+    ka <- exp(tka + eta.ka)
+    cl <- exp(tcl + eta.cl)
+    v <- exp(tv + eta.v)
+    linCmt() ~ add(add.sd)
+  })
+}
+
+theo_sd_fit <- nlmixr(one.cmt, theo_sd, "foce")
+
 xpdb <- xpose_data_nlmixr2(obj = theo_sd_fit)
 
 }

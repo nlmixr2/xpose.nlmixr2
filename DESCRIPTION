@@ -1,7 +1,7 @@
 Package: xpose.nlmixr
 Type: Package
-Title: Graphical Diagnostics for Pharmacometric Models: Extension to 'nlmixr' and 'nlmixr2'
-Version: 0.3.0
+Title: Graphical Diagnostics for Pharmacometric Models: Extension to 'nlmixr2'
+Version: 0.4.0
 Authors@R: c(person('Justin', 'Wilkins', email = 'justin.wilkins@occams.com',
                   role = c('aut', 'cre', 'cph')),
           person('Matthew','Fidler',
@@ -30,7 +30,7 @@ Authors@R: c(person('Justin', 'Wilkins', email = 'justin.wilkins@occams.com',
       person('Occams', role = 'ctb'),
       person('Novartis', role = 'ctb'))
 Maintainer: Justin Wilkins <justin.wilkins@occams.com>
-Description: Extension to 'xpose' to support 'nlmixr'. Provides functions to import 'nlmixr' fit data into an 'xpose' data object, allowing the use of 'xpose' for 'nlmixr' model diagnostics.  
+Description: Extension to 'xpose' to support 'nlmixr2'. Provides functions to import 'nlmixr2' fit data into an 'xpose' data object, allowing the use of 'xpose' for 'nlmixr' model diagnostics.
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
@@ -48,7 +48,7 @@ Imports:
     vpc (>= 1.0.2),
     nlme,
     crayon,
-    rlang
+    rlang,
+    nlmixr2
+Suggests: readr
 RoxygenNote: 7.1.2
-Suggests: 
-    nlmixr
