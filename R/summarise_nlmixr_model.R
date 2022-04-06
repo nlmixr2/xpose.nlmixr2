@@ -14,8 +14,6 @@
 #' @importFrom dplyr bind_rows filter mutate arrange_at case_when select one_of tibble
 #' @importFrom tidyr complete
 #' @importFrom rlang syms
-
-
 summarise_nlmixr2_model <- function(obj, model, software, rounding, runname) {
     sum <- dplyr::bind_rows(
                       sum_nlmixr2_software(software),                    # Software name

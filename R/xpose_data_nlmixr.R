@@ -69,7 +69,7 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
                               quiet,
                               skip        = NULL,
                               ...) {
-
+  runname <- deparse(substitute(obj))
 
   . = NULL
   ID = NULL
@@ -128,7 +128,6 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
     }
   }
 
-  runname <- deparse(substitute(obj))
 
   if (any("nlmixr2FitData" == class(obj))) {
     data <- as.data.frame(obj)
@@ -159,6 +158,10 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
   # }
   if(!all(names(diag(obj$omega)) %in% names(data_a))) {
     data_a <- merge(data_a, obj$eta)
+  }
+
+  if (!("EVID" %in% names(data_a))) {
+    data_a$EVID <- 0
   }
 
   data <- NULL
