@@ -150,6 +150,7 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
   }
   data_a <- obj$dataMergeInner
   names(data_a) <- toupper(names(data_a))
+  data_a <- data_a[, !duplicated(names(data_a))]
   full.dat <- data_a
 
   # check for ETAs
@@ -163,6 +164,7 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
   if (!("EVID" %in% names(data_a))) {
     data_a$EVID <- 0
   }
+  print(summary(data_a))
 
   data <- NULL
   data_ind <- data_a %>%

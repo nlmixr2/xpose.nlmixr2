@@ -87,7 +87,7 @@ one.cmt <- function() {
   })
 }
 
-theo_sd_fit <- nlmixr(one.cmt, theo_sd, "foce")
+theo_sd_fit <- nlmixr(one.cmt, theo_sd, "focei", control=foceiControl(print=0))
 
 xpdb <- xpose_data_nlmixr2(obj = theo_sd_fit)
 
