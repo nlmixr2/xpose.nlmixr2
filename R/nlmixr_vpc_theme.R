@@ -8,7 +8,6 @@
 #' @importFrom xpose theme_xp_default
 #'
 #' @export
-
 nlmixr2_vpc_theme <- vpc::new_vpc_theme(list(obs_color = "#1F4E79",
                                             obs_size = 1,
                                             obs_median_color = "#1F4E79",

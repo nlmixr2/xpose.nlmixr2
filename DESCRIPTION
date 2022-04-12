@@ -49,6 +49,6 @@ Imports:
     nlme,
     crayon,
     rlang,
-    nlmixr2
-Suggests: readr
+    nlmixr2est
+Suggests: readr, nlmixr2
 RoxygenNote: 7.1.2

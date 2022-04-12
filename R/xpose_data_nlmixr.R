@@ -24,6 +24,7 @@
 #'
 #' @return An \code{\link[xpose]{xpose_data}} object suitable for use in 'xpose'.
 #'
+#' @importFrom nlmixr2est nlmixr2
 #' @importFrom dplyr group_by mutate tibble case_when
 #' @importFrom tibble as_tibble
 #' @importFrom stringr str_detect
