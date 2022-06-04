@@ -14,6 +14,7 @@
 #' @importFrom dplyr bind_rows filter mutate arrange_at case_when select one_of tibble
 #' @importFrom tidyr complete
 #' @importFrom rlang syms
+#' @importFrom methods is
 summarise_nlmixr2_model <- function(obj, model, software, rounding, runname) {
     sum <- dplyr::bind_rows(
                       sum_nlmixr2_software(software),                    # Software name
@@ -201,7 +202,7 @@ sum_nlmixr2_nobs <- function(model, software, obj) {
 # Number of individuals
 sum_nlmixr2_nind <- function(model, software, obj) {
   if (software == 'nlmixr2') {
-    nid <- obj$nsub
+    nind <- obj$nsub
     dplyr::tibble(problem = 1, subprob = 0, label = 'nind', value = as.character(nind))
   }
 }

@@ -1,4 +1,4 @@
-#' Import nlmixr2 output into R
+#' Import nlmixr2 output into xpose object
 #'
 #' @description Convert 'nlmixr2' model output into an 'xpose' database.
 #'
@@ -57,7 +57,7 @@
 #'   })
 #' }
 #'
-#' theo_sd_fit <- nlmixr(one.cmt, theo_sd, "focei", control=foceiControl(print=0))
+#' theo_sd_fit <- nlmixr2(one.cmt, theo_sd, "focei", control=foceiControl(print=0))
 #'
 #' xpdb <- xpose_data_nlmixr2(obj = theo_sd_fit)
 #'
@@ -91,7 +91,7 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
   if (missing(quiet)) quiet <- !interactive()
 
   if (!inherits(obj,  "nlmixr2FitData")) {
-    stop("needs to be a nlmixr2 fit")
+    stop("Input object needs to be an nlmixr2 fit.")
   }
   mtype <- obj$est
   software <- "nlmixr2"
@@ -105,10 +105,10 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
       obj <- nlmixr2::addCwres(obj)
       if (any(names(obj) == "CWRES")){
         wres <- "CWRES"
-        warning(sprintf("Added CWRES to fit (using %s%s)",
+        warning(sprintf("Added CWRES to fit (using %s%s)...",
                         crayon::blue("nlmixr2::"), crayon::yellow("addCwres")))
       } else {
-        warning(sprintf("Using RES; Consider adding NPDE (%s%s) to fit",
+        warning(sprintf("Using RES; Consider adding NPDE (%s%s) to fit.",
                         crayon::blue("nlmixr2::"), crayon::yellow("addNpde")))
       }
     }
@@ -165,7 +165,7 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
   if (!("EVID" %in% names(data_a))) {
     data_a$EVID <- 0
   }
-  print(summary(data_a))
+  #print(summary(data_a))
 
   data <- NULL
   data_ind <- data_a %>%

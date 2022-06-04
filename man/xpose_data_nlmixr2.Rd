@@ -3,7 +3,7 @@
 \name{xpose_data_nlmixr2}
 \alias{xpose_data_nlmixr2}
 \alias{xpose_data_nlmixr}
-\title{Import nlmixr2 output into R}
+\title{Import nlmixr2 output into xpose object}
 \usage{
 xpose_data_nlmixr2(
   obj = NULL,
