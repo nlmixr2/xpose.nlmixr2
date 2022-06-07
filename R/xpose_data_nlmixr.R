@@ -32,7 +32,7 @@
 #' @importFrom stats coef rnorm
 #'
 #' @examples
-#'
+#' \dontrun{
 #' library(nlmixr2)
 #'
 #' one.cmt <- function() {
@@ -60,6 +60,7 @@
 #' theo_sd_fit <- nlmixr2(one.cmt, theo_sd, "focei", control=foceiControl(print=0))
 #'
 #' xpdb <- xpose_data_nlmixr2(obj = theo_sd_fit)
+#'}
 #'
 #' @export
 xpose_data_nlmixr2 <- function(obj         = NULL,

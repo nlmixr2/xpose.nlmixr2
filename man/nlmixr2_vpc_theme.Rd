@@ -3,7 +3,7 @@
 \docType{data}
 \name{nlmixr2_vpc_theme}
 \alias{nlmixr2_vpc_theme}
-\title{Default VPC theme for 'xpose.nlmixr'}
+\title{Default VPC theme for 'xpose.nlmixr2'}
 \format{
 An object of class \code{vpc_theme} of length 23.
 }
@@ -14,6 +14,6 @@ nlmixr2_vpc_theme
 A list with 'vpc' theme specifiers.
 }
 \description{
-Default VPC theme for 'xpose.nlmixr'.
+Default VPC theme for 'xpose.nlmixr2'.
 }
 \keyword{datasets}

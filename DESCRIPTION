@@ -30,7 +30,7 @@ Authors@R: c(person('Justin', 'Wilkins', email = 'justin.wilkins@occams.com',
       person('Occams', role = 'ctb'),
       person('Novartis', role = 'ctb'))
 Maintainer: Justin Wilkins <justin.wilkins@occams.com>
-Description: Extension to 'xpose' to support 'nlmixr2'. Provides functions to import 'nlmixr2' fit data into an 'xpose' data object, allowing the use of 'xpose' for 'nlmixr' model diagnostics.
+Description: Extension to 'xpose' to support 'nlmixr2'. Provides functions to import 'nlmixr2' fit data into an 'xpose' data object, allowing the use of 'xpose' for 'nlmixr2' model diagnostics.
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
@@ -46,7 +46,6 @@ Imports:
     magrittr (>= 1.5),
     methods (>= 3.4.1),
     vpc (>= 1.0.2),
-    nlme,
     crayon,
     rlang,
     nlmixr2est
