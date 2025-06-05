@@ -111,7 +111,7 @@ sum_nlmixr2_software <- function(software) {
 
 # Software version
 sum_nlmixr2_version <- function(software) {
-    sum_tpl('version', as.character(utils::packageVersion('nlmixr2')))
+    sum_tpl('version', as.character(utils::packageVersion('nlmixr2est')))
 }
 
 # Model object name
