@@ -1,22 +1,22 @@
 Package: xpose.nlmixr2
 Type: Package
 Title: Graphical Diagnostics for Pharmacometric Models: Extension to 'nlmixr2'
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: c(person('Justin', 'Wilkins', email = 'justin.wilkins@occams.com',
                   role = c('aut', 'cre', 'cph')),
           person('Matthew','Fidler',
-      role = c('aut','cph'), email = 'matthew.fidler@gmail.com'),  
+      role = c('aut','cph'), email = 'matthew.fidler@gmail.com'),
             person('Benjamin', 'Guiastrennec',
              role = c('aut'),
              email = 'guiastrennec@gmail.com'),
-      person('Andrew C.', 'Hooker', 
+      person('Andrew C.', 'Hooker',
              role = c('aut'),
              email = 'andrew.hooker@farmbio.uu.se'),
       person('Anna', 'Olofsson', role = c('aut', 'cph')),
       person('Sebastian', 'Ueckert',
              role = c('aut'),
              email = 'sebastian.ueckert@farmbio.uu.se'),
-      person('Ron', 'Keizer', 
+      person('Ron', 'Keizer',
              role = 'aut',
              email = 'ronkeizer@gmail.com'),
       person('Kajsa', 'Harling', role = 'ctb'),
