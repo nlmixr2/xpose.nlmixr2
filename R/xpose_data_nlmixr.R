@@ -103,14 +103,14 @@ xpose_data_nlmixr2 <- function(obj         = NULL,
       wres <- "NPDE"
     } else if (any(names(obj) == "RES")) {
       wres <- "RES"
-      obj <- nlmixr2::addCwres(obj)
+      obj <- nlmixr2est::addCwres(obj)
       if (any(names(obj) == "CWRES")){
         wres <- "CWRES"
         warning(sprintf("Added CWRES to fit (using %s%s)...",
-                        crayon::blue("nlmixr2::"), crayon::yellow("addCwres")))
+                        crayon::blue("nlmixr2est::"), crayon::yellow("addCwres")))
       } else {
         warning(sprintf("Using RES; Consider adding NPDE (%s%s) to fit.",
-                        crayon::blue("nlmixr2::"), crayon::yellow("addNpde")))
+                        crayon::blue("nlmixr2est::"), crayon::yellow("addNpde")))
       }
     }
   }
