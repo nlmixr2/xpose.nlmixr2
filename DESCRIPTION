@@ -49,5 +49,9 @@ Imports:
     crayon,
     rlang,
     nlmixr2est
-Suggests: readr, nlmixr2
+Suggests: 
+    readr,
+    nlmixr2,
+    testthat (>= 3.0.0)
 RoxygenNote: 7.1.2
+Config/testthat/edition: 3

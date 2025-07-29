@@ -29,14 +29,17 @@ summarise_nlmixr2_model <- function(obj, model, software, rounding, runname) {
     sum_nlmixr2_label(model, software),                # Model label
     sum_nlmixr2_description(model, software),          # Model description
     sum_nlmixr2_input_data(obj, model, software),           # Model input data used
-    sum_nlmixr2_nobs(model, software, obj),               # Simulation seed
+    sum_nlmixr2_nind(model, software, obj),               # Number of individuals
+    sum_nlmixr2_nobs(model, software, obj),               # Number of observations
     sum_nlmixr2_subroutine(model, software),           # Des solver
     sum_nlmixr2_runtime(model, software, obj, rounding),   # Estimation runtime
+    sum_nlmixr2_simseed(obj, model, software),   # Simulation seed
     sum_nlmixr2_covtime(model, software, obj, rounding),   # Covariance matrix runtime
     sum_nlmixr2_term(model, software),                 # Run termination message
     sum_nlmixr2_warnings(model, software),             # Run warnings (e.g. boundary)
     sum_nlmixr2_errors(model, software),               # Run errors (e.g termination error)
     sum_nlmixr2_nsig(model, software),                 # Number of significant digits
+    sum_nlmixr2_nsim(model, software),                 # Number of simulations
     sum_nlmixr2_condn(model, software, rounding),      # Condition number
     sum_nlmixr2_nesample(model, software),             # Number of esample
     sum_nlmixr2_esampleseed(model, software),          # esample seed number
@@ -149,14 +152,22 @@ sum_nlmixr2_reference <- function(model, software) {
 # Run start time
 sum_nlmixr2_timestart <- function(obj, model, software) {
   if (software == 'nlmixr2') {
-    dplyr::tibble(problem = 0, subprob = 0, label = 'timestart', value = as.character(obj$start.time))
+    st <- "not implemented"
+    if (!is.null(obj$start.time)) {
+      st <- as.character(obj$start.time)
+    }
+    dplyr::tibble(problem = 0, subprob = 0, label = 'timestart', value = st)
   }
 }
 
 # Run stop time
 sum_nlmixr2_timestop <- function(obj, model, software) {
   if (software == 'nlmixr2') {
-    dplyr::tibble(problem = 0, subprob = 0, label = 'timestop', value = as.character(obj$stop.time))
+    st <- "not implemented"
+    if (!is.null(obj$stop.time)) {
+      st <- as.character(obj$stop.time)
+    }
+    dplyr::tibble(problem = 0, subprob = 0, label = 'timestop', value = st)
   }
 }
 
@@ -217,7 +228,11 @@ sum_nlmixr2_nsim <- function(model, software) {
 # Simulation seed
 sum_nlmixr2_simseed <- function(obj, model, software) {
   if (software == 'nlmixr2') {
-    dplyr::tibble(problem = 1, subprob = 0, label = 'seed', value = as.character(obj$seed))
+    seed_ch <- "not implemented"
+    if (!is.null(obj$seed)) {
+      seed_ch <- as.character(obj$seed)
+    }
+    dplyr::tibble(problem = 1, subprob = 0, label = 'simseed', value = seed_ch)
   }
 }
 
