@@ -4,26 +4,34 @@ export(nlmixr2_vpc_theme)
 export(theme_xp_nlmixr2)
 export(xpose_data_nlmixr)
 export(xpose_data_nlmixr2)
-importFrom(dplyr,arrange_at)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,case_when)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,mutate)
-importFrom(dplyr,one_of)
-importFrom(dplyr,select)
-importFrom(dplyr,tibble)
-importFrom(ggplot2,label_both)
-importFrom(ggplot2,labeller)
+importFrom(dplyr,
+  arrange_at,
+  bind_rows,
+  case_when,
+  filter,
+  group_by,
+  mutate,
+  one_of,
+  select,
+  tibble
+)
+importFrom(ggplot2,
+  label_both,
+  labeller
+)
 importFrom(magrittr,"%>%")
 importFrom(methods,is)
 importFrom(nlmixr2est,nlmixr2)
 importFrom(rlang,syms)
-importFrom(stats,coef)
-importFrom(stats,rnorm)
+importFrom(stats,
+  coef,
+  rnorm
+)
 importFrom(stringr,str_detect)
 importFrom(tibble,as_tibble)
 importFrom(tidyr,complete)
 importFrom(vpc,new_vpc_theme)
-importFrom(xpose,theme_readable)
-importFrom(xpose,theme_xp_default)
+importFrom(xpose,
+  theme_readable,
+  theme_xp_default
+)
